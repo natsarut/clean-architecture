@@ -5,5 +5,5 @@ Clean Architecture – Implements .NET application using clean architecture by r
 - https://medium.com/@codebob75/repository-pattern-c-ultimate-guide-entity-framework-core-clean-architecture-dtos-dependency-6a8d8b444dcb
 - https://www.csharp.com/blogs/net-60-clean-architecture-using-repository-pattern-and-dapper
 - https://dev.to/techiesdiary/net-60-clean-architecture-using-repository-pattern-and-dapper-with-logging-and-unit-testing-1nd9
-- https://medium.com/t-t-software-solution/clean-architecture-from-scratch-with-net7-187f18b6accd
 - https://code-maze.com/aspnetcore-webapi-best-practices
+- https://medium.com/t-t-software-solution/clean-architecture-from-scratch-with-net7-187f18b6accd
