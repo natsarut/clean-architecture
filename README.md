@@ -9,4 +9,5 @@ Clean Architecture – Implements .NET application using clean architecture by r
 - https://dzone.com/articles/writing-logs-into-elastic-with-nlog-elk-and-net-50
 - https://www.c-sharpcorner.com/article/logging-with-elasticsearch-kibana-serilog-using-asp-net-core-docker
 - https://dev.to/mohammedahmed/building-a-custom-logging-provider-in-aspnet-core-437n
+- https://levelup.gitconnected.com/unit-testing-in-clean-architecture-with-net-ae503cad045d
 - https://medium.com/t-t-software-solution/clean-architecture-from-scratch-with-net7-187f18b6accd
