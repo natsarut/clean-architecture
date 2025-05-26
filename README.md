@@ -1,5 +1,6 @@
 # clean-architecture
 Clean Architecture – Implements .NET application using clean architecture by repository pattern.
+- https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures
 - https://www.codeproject.com/Articles/5351235/Clean-Architecture-Incorporating-Repository-Patter
 - https://medium.com/@yasin162001/introduction-90f7f7e19d43
 - https://medium.com/@codebob75/repository-pattern-c-ultimate-guide-entity-framework-core-clean-architecture-dtos-dependency-6a8d8b444dcb
