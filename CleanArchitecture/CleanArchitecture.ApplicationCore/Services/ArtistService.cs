@@ -13,6 +13,8 @@ namespace CleanArchitecture.ApplicationCore.Services
 {
     public class ArtistService(IUnitOfWork unitOfWork, ILogger<GenericService<Artist>> logger) : GenericService<Artist>(unitOfWork, logger), IArtistService
     {
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
         public async Task RemoveArtistAsync(Guid artistId, CancellationToken cancellationToken = default)
         {
             Artist? artist = await GetByIdAsync(artistId, cancellationToken) ?? throw new NotFoundException($"Artist with ArtistId {artistId} not found.");

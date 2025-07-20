@@ -45,6 +45,12 @@ namespace CleanArchitecture.WebApi.Controllers
         public async Task<IActionResult> GetPaginatedArtists([FromQuery] QueryStringParameters queryStringParameters)
         {
             _logger.LogInformation(nameof(GetPaginatedArtists));
+
+            if (string.IsNullOrWhiteSpace(queryStringParameters.OrderBy))
+            {
+                queryStringParameters.OrderBy = nameof(ArtistDto.Name); // Default ordering by Name
+            }
+
             PaginatedList<Artist> paginatedArtists = await _artistService.GetPaginatedAllAsync(queryStringParameters);
             var paginatedArtistsDto = new PaginatedList<ArtistDto>(_mapper.Map<IEnumerable<ArtistDto>>(paginatedArtists), paginatedArtists.TotalCount, paginatedArtists.CurrentPage, paginatedArtists.PageSize);
             Response?.Headers.Append(PaginatedList<ArtistDto>.HttpHeaderKey, paginatedArtistsDto.ToHttpHeaderValue());

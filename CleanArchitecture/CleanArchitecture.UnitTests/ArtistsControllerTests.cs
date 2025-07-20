@@ -20,7 +20,7 @@ namespace CleanArchitecture.UnitTests
 {
     public class ArtistsControllerTests
     {
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new(MockBehavior.Strict);
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
         private readonly Mock<ILogger<GenericService<Artist>>> _genericServiceLoggerMock = new();
         private readonly Mock<ILogger<ArtistsController>> _controllerLoggerMock = new();
         private readonly Guid _id = Guid.NewGuid();
@@ -79,8 +79,9 @@ namespace CleanArchitecture.UnitTests
         public async Task GetPaginatedArtists_Returns_PaginatedList()
         {
             // Arrange
+            List<Artist> items = [new() { ArtistId = Guid.NewGuid() }, new() { ArtistId = Guid.NewGuid() }];
             var queryStringParameters = new QueryStringParameters { PageNumber = 1, PageSize = 10 };
-            var paginatedArtists = new PaginatedList<Artist>([new() { ArtistId = Guid.NewGuid() }], 1, 1, 10);
+            var paginatedArtists = new PaginatedList<Artist>(items, items.Count, queryStringParameters.PageNumber, queryStringParameters.PageSize);
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetPaginatedAllAsync(queryStringParameters, string.Empty, false, default)).ReturnsAsync(paginatedArtists);
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
@@ -91,7 +92,7 @@ namespace CleanArchitecture.UnitTests
             // Assert
             OkObjectResult okResult = Assert.IsType<OkObjectResult>(result);
             PaginatedList<ArtistDto> paginatedList = Assert.IsType<PaginatedList<ArtistDto>>(okResult.Value);
-            Assert.Equal(1, paginatedList.TotalCount);
+            Assert.Equal(items.Count, paginatedList.TotalCount);
         }
 
         [Fact]
@@ -114,5 +115,43 @@ namespace CleanArchitecture.UnitTests
             var createdArtistDto = Assert.IsType<ArtistDto>(createdResult.Value);
             Assert.Equal(_id, createdArtistDto.ArtistId);
         }
+
+        [Fact]
+        public async Task PutArtist_Updates_Artist()
+        {
+            // Arrange
+            var artistDto = new ArtistForUpdateDto { ArtistId = _id, Name = "Updated Artist" };
+            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id });
+            _unitOfWorkMock.Setup(x => x.Repository<Artist>().Update(It.IsAny<Artist>()));
+            _unitOfWorkMock.Setup(x => x.SaveChangesAsync(default)).Returns(Task.CompletedTask);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+
+            // Act
+            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(), _controllerLoggerMock.Object);
+            IActionResult result = await controller.PutArtist(_id, artistDto);
+
+            // Assert
+            NoContentResult noContentResult = Assert.IsType<NoContentResult>(result);
+            _unitOfWorkMock.Verify(x => x.Repository<Artist>().Update(It.IsAny<Artist>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteArtist_Removes_Artist()
+        {
+            // Arrange
+            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id });
+            _unitOfWorkMock.Setup(x => x.Repository<Artist>().Remove(It.IsAny<Artist>()));
+            _unitOfWorkMock.Setup(x => x.SaveChangesAsync(default)).Returns(Task.CompletedTask);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+
+            // Act
+            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(), _controllerLoggerMock.Object);
+            IActionResult result = await controller.DeleteArtist(_id);
+
+            // Assert
+            NoContentResult noContentResult = Assert.IsType<NoContentResult>(result);
+            _unitOfWorkMock.Verify(x => x.Repository<Artist>().Remove(It.IsAny<Artist>()), Times.Once);
+        }
+
     }
 }

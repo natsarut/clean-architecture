@@ -11,10 +11,14 @@ namespace CleanArchitecture.ApplicationCore
     {
         public const string HttpHeaderKey = "X-Pagination";
 
-        public int CurrentPage { get; private set; }
-        public int PageSize { get; private set; }
+        public int CurrentPage { get; private set; } = 1;
+        public int PageSize { get; private set; } = 10;
         public int TotalCount { get; private set; }
         public int TotalPages { get; private set; }
+
+        public PaginatedList()
+        {
+        }
 
         public PaginatedList(IEnumerable<T> items,int totalCount, int currentPage, int pageSize)
         {

@@ -15,17 +15,5 @@ namespace CleanArchitecture.WebApi.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }
-
-        public static void AddApplicationCoreServices(this IServiceCollection services)
-        {
-            // Add application core services to the container.
-            services.AddScoped<IAlbumService, AlbumService>();
-            services.AddScoped<IArtistService, ArtistService>();
-        }
-
-        public static void AddInfrastructures(this IServiceCollection services)
-        {
-            services.AddScoped<IUnitOfWork,ApplicationUnitOfWork>();
-        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Infrastructure.Databases;
+using CleanArchitecture.Infrastructure.Extensions;
 using CleanArchitecture.WebApi.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -29,14 +30,11 @@ try
     // Configures the Web API document.
     builder.Services.AddWebApiDocuments();
 
-    // Add connection string to services container - using EF pooling for performance.
-    builder.Services.AddDbContextPool<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-    // Add application core services to the container.
-    builder.Services.AddApplicationCoreServices();
+    // Add connection string to services container.
+    builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     // Add infrastructures to the container.
-    builder.Services.AddInfrastructures();
+    builder.Services.AddInfrastructureServices();
 
     // Add AutoMaper to services container.
     builder.Services.AddAutoMapper(typeof(Program));
@@ -67,4 +65,7 @@ catch (Exception ex)
     throw;
 }
 
-
+/// <summary>
+/// Used in the integration tests project.
+/// </summary>
+public partial class Program { }
