@@ -29,7 +29,7 @@ namespace CleanArchitecture.UnitTests
         public async Task GetArtist_Returns_SingleObject()
         {
             // Arrange
-            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id });
+            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id,Name="BNK48" });
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
@@ -62,7 +62,7 @@ namespace CleanArchitecture.UnitTests
         public async Task GetArtists_Returns_Collection()
         {
             // Arrange
-            var artists = new List<Artist> { new() { ArtistId = Guid.NewGuid() }, new() { ArtistId = Guid.NewGuid() } };
+            var artists = new List<Artist> { new() { ArtistId = Guid.NewGuid(),Name="BNK48" }, new() { ArtistId = Guid.NewGuid(),Name="JKT48" } };
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetAllAsync(null, string.Empty, false, default)).ReturnsAsync(artists);
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
@@ -79,7 +79,7 @@ namespace CleanArchitecture.UnitTests
         public async Task GetPaginatedArtists_Returns_PaginatedList()
         {
             // Arrange
-            List<Artist> items = [new() { ArtistId = Guid.NewGuid() }, new() { ArtistId = Guid.NewGuid() }];
+            List<Artist> items = [new() { ArtistId = Guid.NewGuid(), Name = "BNK48" }, new() { ArtistId = Guid.NewGuid(), Name = "JKT48" }];
             var queryStringParameters = new QueryStringParameters { PageNumber = 1, PageSize = 10 };
             var paginatedArtists = new PaginatedList<Artist>(items, items.Count, queryStringParameters.PageNumber, queryStringParameters.PageSize);
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetPaginatedAllAsync(queryStringParameters, string.Empty, false, default)).ReturnsAsync(paginatedArtists);
@@ -121,7 +121,7 @@ namespace CleanArchitecture.UnitTests
         {
             // Arrange
             var artistDto = new ArtistForUpdateDto { ArtistId = _id, Name = "Updated Artist" };
-            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id });
+            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id,Name = "BNK48" });
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().Update(It.IsAny<Artist>()));
             _unitOfWorkMock.Setup(x => x.SaveChangesAsync(default)).Returns(Task.CompletedTask);
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
@@ -139,7 +139,7 @@ namespace CleanArchitecture.UnitTests
         public async Task DeleteArtist_Removes_Artist()
         {
             // Arrange
-            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id });
+            _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id , Name = "BNK48" });
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().Remove(It.IsAny<Artist>()));
             _unitOfWorkMock.Setup(x => x.SaveChangesAsync(default)).Returns(Task.CompletedTask);
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
