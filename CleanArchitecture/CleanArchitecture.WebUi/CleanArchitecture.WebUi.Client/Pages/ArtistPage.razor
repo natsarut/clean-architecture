@@ -1,0 +1,61 @@
+﻿@page "/artist"
+@rendermode InteractiveAuto
+@inject IBffService BffService
+
+<PageTitle>Artist</PageTitle>
+<h3>Artists</h3>
+
+@if (_artists == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!_artists.Any())
+{
+    <p>No artists found.</p>
+}
+else
+{
+    <div class="page-size-chooser">
+        Items per page:
+        <select @bind="@_pagination.ItemsPerPage">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+        </select>
+    </div>
+    <div class="grid">
+        <QuickGrid Items="@_artists" Pagination="@_pagination">
+            <PropertyColumn Property="@(c => c.Name)" Sortable="true" Class="country-name" />
+            <PropertyColumn Property="@(c => c.ActiveFrom)" Sortable="true" Align="Align.Right" />
+        </QuickGrid>
+    </div>
+    <Paginator State="@_pagination" />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Active From</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var artist in _artists)
+            {
+                <tr>
+                    <td>@artist.Name</td>
+                    <td>@artist.ActiveFrom?.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IQueryable<ArtistDto>? _artists;
+    private PaginationState _pagination = new PaginationState { ItemsPerPage = 10 };
+
+    protected override async Task OnInitializedAsync()
+    {
+        _artists = new List<ArtistDto>(await BffService.GetArtistsAsync()).AsQueryable();
+    }
+}

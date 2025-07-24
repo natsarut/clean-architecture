@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 
-namespace CleanArchitecture.WebApi.Extensions
+namespace CleanArchitecture.WebApi.Code.Extensions
 {
     public static class ExceptionMiddlewareExtensions
     {

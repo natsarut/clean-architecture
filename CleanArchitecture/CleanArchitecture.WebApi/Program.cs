@@ -1,10 +1,12 @@
 ﻿using CleanArchitecture.Infrastructure.Databases;
 using CleanArchitecture.Infrastructure.Extensions;
-using CleanArchitecture.WebApi.Extensions;
+using CleanArchitecture.WebApi.Code.Extensions;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using NLog;
-using System;
 using NLog.Web;
+using System;
 
 
 
@@ -14,6 +16,13 @@ try
 {
     logger.Info("Initializing application...");
     var builder = WebApplication.CreateBuilder(args);
+    string? defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+    if (string.IsNullOrWhiteSpace(defaultConnectionString))
+    {
+        throw new InvalidOperationException("DefaultConnection string is not configured.");
+    }
+
     builder.Services.AddControllers(options => 
     { 
         options.ReturnHttpNotAcceptable = true; 
@@ -31,13 +40,16 @@ try
     builder.Services.AddWebApiDocuments();
 
     // Add connection string to services container.
-    builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(defaultConnectionString));
 
     // Add infrastructures to the container.
     builder.Services.AddInfrastructureServices();
 
     // Add AutoMaper to services container.
     builder.Services.AddAutoMapper(typeof(Program));
+
+    // Add health checks to the container.
+    builder.Services.AddHealths(defaultConnectionString);
 
     var app = builder.Build();
     app.ConfigureExceptionHandler(app.Logger);
@@ -56,6 +68,15 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+
+    // HealthCheck Middleware
+    app.UseHealthChecks("/health", new HealthCheckOptions()
+    {
+        Predicate = _ => true,
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+
+    app.MapHealthChecksUI(); // Map Health Checks UI (/healthchecks-ui)
     app.Run();
 }
 catch (Exception ex)
