@@ -13,4 +13,5 @@ Clean Architecture – Implements .NET application using clean architecture by r
 - https://medium.com/@codebob75/unit-testing-in-c-with-xunit-complete-guide-18ee2b919b05
 - https://thecodebuzz.com/unit-test-mock-automapper-asp-net-core-imapper/
 - https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-code-coverage?tabs=windows
+- https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health
 - https://medium.com/t-t-software-solution/clean-architecture-from-scratch-with-net7-187f18b6accd
