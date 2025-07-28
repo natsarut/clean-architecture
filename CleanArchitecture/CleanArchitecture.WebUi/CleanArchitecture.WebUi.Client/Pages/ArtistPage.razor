@@ -1,5 +1,6 @@
-﻿@page "/artist"
+﻿@page "/artists"
 @rendermode InteractiveAuto
+@inject HttpClient Http
 @inject IBffService BffService
 
 <PageTitle>Artist</PageTitle>
@@ -31,31 +32,31 @@ else
         </QuickGrid>
     </div>
     <Paginator State="@_pagination" />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Active From</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var artist in _artists)
-            {
-                <tr>
-                    <td>@artist.Name</td>
-                    <td>@artist.ActiveFrom?.ToString("yyyy-MM-dd")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 }
 
 @code {
     private IQueryable<ArtistDto>? _artists;
     private PaginationState _pagination = new PaginationState { ItemsPerPage = 10 };
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _artists = new List<ArtistDto>(await BffService.GetArtistsAsync()).AsQueryable();
+        if (firstRender)
+        {
+            var response = await Http.GetAsync("api/bff/getartists");
+            response.EnsureSuccessStatusCode();
+            List<ArtistDto>? artists = await response.Content.ReadFromJsonAsync<List<ArtistDto>>();
+            // var artists = new List<ArtistDto>(await BffService.GetArtistsAsync());
+
+            if (artists != null)
+            {
+                _artists = artists.AsQueryable();
+            }
+            else
+            {
+                _artists = Enumerable.Empty<ArtistDto>().AsQueryable();
+            }
+
+            StateHasChanged();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.WebUi.Models;
+﻿using CleanArchitecture.WebUi.Shared.Models;
 
 namespace CleanArchitecture.WebUi.Code.Services
 {

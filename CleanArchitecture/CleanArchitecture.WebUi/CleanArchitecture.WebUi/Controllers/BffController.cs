@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.WebUi.Code.Services;
-using CleanArchitecture.WebUi.Models;
+using CleanArchitecture.WebUi.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

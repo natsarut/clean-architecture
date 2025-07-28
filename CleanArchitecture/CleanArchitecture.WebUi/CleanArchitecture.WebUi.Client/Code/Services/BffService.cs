@@ -1,16 +1,14 @@
 ﻿using CleanArchitecture.WebUi.Client.Code.Interfaces;
-using CleanArchitecture.WebUi.Models;
+using CleanArchitecture.WebUi.Shared.Models;
 using System.Net.Http.Json;
 
 namespace CleanArchitecture.WebUi.Client.Code.Services
 {
-    public class BffService(HttpClient httpClient): IBffService
+    public class BffService(HttpClient http): IBffService
     {
-        private readonly HttpClient _httpClient = httpClient;
-
         public async Task<IEnumerable<ArtistDto>> GetArtistsAsync()
         {
-            var response = await _httpClient.GetAsync("api/bff/getartists");
+            var response = await http.GetAsync("api/bff/getartists");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<IEnumerable<ArtistDto>>() ?? [];
         }

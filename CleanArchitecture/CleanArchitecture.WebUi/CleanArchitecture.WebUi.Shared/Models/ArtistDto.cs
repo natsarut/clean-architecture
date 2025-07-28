@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.WebUi.Models
+﻿namespace CleanArchitecture.WebUi.Shared.Models
 {
     public class ArtistDto
     {
