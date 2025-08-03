@@ -42,10 +42,11 @@ else
     {
         if (firstRender)
         {
-            var response = await Http.GetAsync("api/bff/getartists");
-            response.EnsureSuccessStatusCode();
-            List<ArtistDto>? artists = await response.Content.ReadFromJsonAsync<List<ArtistDto>>();
-            // var artists = new List<ArtistDto>(await BffService.GetArtistsAsync());
+            // var response = await Http.GetAsync("api/bff/getartists");
+            // response.EnsureSuccessStatusCode();
+            // List<ArtistDto>? artists = await response.Content.ReadFromJsonAsync<List<ArtistDto>>();
+            var bffService = new BffService(Http);
+            var artists = new List<ArtistDto>(await bffService.GetArtistsAsync());
 
             if (artists != null)
             {

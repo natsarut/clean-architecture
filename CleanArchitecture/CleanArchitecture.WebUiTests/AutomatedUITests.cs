@@ -5,7 +5,7 @@ namespace CleanArchitecture.WebUiTests
 {
     public class AutomatedUITests: IDisposable
     {
-        private readonly IWebDriver _driver;
+        private readonly ChromeDriver _driver;
 
         public AutomatedUITests() => _driver = new ChromeDriver();
 
@@ -13,6 +13,7 @@ namespace CleanArchitecture.WebUiTests
         {
             _driver.Quit();
             _driver.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         [Fact]

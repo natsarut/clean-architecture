@@ -1,4 +1,5 @@
 using CleanArchitecture.WebUi.Code.Extensions;
+using CleanArchitecture.WebUi.Code.Options;
 using CleanArchitecture.WebUi.Code.Services;
 using CleanArchitecture.WebUi.Components;
 using HealthChecks.UI.Client;
@@ -21,6 +22,8 @@ try
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
     builder.Services.AddRazorComponents().AddInteractiveServerComponents().AddInteractiveWebAssemblyComponents();
+    builder.Services.AddOptions<AppConfigOptions>().Bind(builder.Configuration.GetSection(AppConfigOptions.SectionName)).ValidateDataAnnotations();
+    AppConfigOptions? appConfig = builder.Configuration.GetSection(AppConfigOptions.SectionName).Get<AppConfigOptions>() ?? throw new InvalidOperationException($"Configuration section '{AppConfigOptions.SectionName}' is not found or invalid.");
     builder.Services.AddDataProtection();
 
     // Configure NLog
@@ -39,11 +42,11 @@ try
     });
 
     // Add health checks to the container.
-    builder.Services.AddHealths();
+    builder.Services.AddHealths(appConfig);
 
     builder.Services.AddHttpClient<ArtistService>(client =>
     {
-        client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7049");
+        client.BaseAddress = new Uri(appConfig.ApiBaseUrl);
         client.DefaultRequestHeaders.Add("Accept", "application/json");
     });
 

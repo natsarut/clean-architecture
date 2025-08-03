@@ -4,7 +4,7 @@ using CleanArchitecture.ApplicationCore.Entities;
 using CleanArchitecture.ApplicationCore.Models;
 using CleanArchitecture.WebApi.Models;
 
-namespace CleanArchitecture.WebApi
+namespace CleanArchitecture.WebApi.Code
 {
     public class AutoMapperProfile: Profile
     {
@@ -16,14 +16,14 @@ namespace CleanArchitecture.WebApi
             CreateMap<ArtistForUpdate, ArtistForUpdateDto>().ReverseMap();
         }
 
-        public static IMapper CreateMapper()
+        public static IMapper CreateMapper(ILoggerFactory loggerFactory)
         {
             if (_mapper == null)
             {
                 var mappingConfig = new MapperConfiguration(mc =>
                 {
                     mc.AddProfile(new AutoMapperProfile());
-                });
+                },loggerFactory);
 
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;

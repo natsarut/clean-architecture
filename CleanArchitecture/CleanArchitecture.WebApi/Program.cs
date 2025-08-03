@@ -1,6 +1,8 @@
 ﻿using CleanArchitecture.Infrastructure.Databases;
 using CleanArchitecture.Infrastructure.Extensions;
+using CleanArchitecture.WebApi.Code;
 using CleanArchitecture.WebApi.Code.Extensions;
+using CleanArchitecture.WebApi.Code.Options;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,8 @@ try
         options.ReturnHttpNotAcceptable = true; 
     });
 
+    builder.Services.AddOptions<AppConfigOptions>().Bind(builder.Configuration.GetSection(AppConfigOptions.SectionName)).ValidateDataAnnotations();
+    AppConfigOptions? appConfig = builder.Configuration.GetSection(AppConfigOptions.SectionName).Get<AppConfigOptions>() ?? throw new InvalidOperationException($"Configuration section '{AppConfigOptions.SectionName}' is not found or invalid.");
     builder.Services.AddDataProtection();
 
     // Configure NLog
@@ -39,14 +43,25 @@ try
     // Configures the Web API document.
     builder.Services.AddWebApiDocuments();
 
-    // Add connection string to services container.
-    builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(defaultConnectionString));
-
+    if (appConfig.UseInMemoryDatabase)
+    {
+        // Use InMemory database for testing purposes.
+        builder.Services.AddDbContext<ApplicationContext>(options => options.UseInMemoryDatabase("InMemoryCleanArchitecture"));
+        logger.Info("Using InMemory database.");
+    }
+    else
+    {
+        // Use SQL Server database.
+        // Add connection string to services container.
+        builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(defaultConnectionString));
+        logger.Info("Using SQL Server database with connection string: {ConnectionString}", nameof(defaultConnectionString));
+    }
+    
     // Add infrastructures to the container.
     builder.Services.AddInfrastructureServices();
 
     // Add AutoMaper to services container.
-    builder.Services.AddAutoMapper(typeof(Program));
+    builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfile>(), typeof(Program));
 
     // Add health checks to the container.
     builder.Services.AddHealths(defaultConnectionString);

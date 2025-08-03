@@ -1,10 +1,13 @@
-﻿namespace CleanArchitecture.WebUi.Code.Extensions
+﻿using CleanArchitecture.WebUi.Code.Options;
+using Microsoft.Extensions.Options;
+
+namespace CleanArchitecture.WebUi.Code.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealths(this IServiceCollection services)
+        public static void AddHealths(this IServiceCollection services, AppConfigOptions appConfig)
         {
-            services.AddHealthChecks();
+            services.AddHealthChecks().AddUrlGroup(new Uri($"{appConfig.ApiBaseUrl}/health"),"Web API");
             services.AddHealthChecksUI().AddInMemoryStorage();
         }
 

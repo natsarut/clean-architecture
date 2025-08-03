@@ -8,7 +8,7 @@ namespace CleanArchitecture.WebUi.Code.Services
 
         public async Task<IEnumerable<ArtistDto>> GetArtistsAsync()
         {
-            var response = await _httpClient.GetAsync("api/artists");
+            var response = await _httpClient.GetAsync("/api/artists");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<IEnumerable<ArtistDto>>() ?? [];
         }
