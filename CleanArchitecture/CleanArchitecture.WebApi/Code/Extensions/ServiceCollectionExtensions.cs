@@ -1,10 +1,23 @@
-﻿namespace CleanArchitecture.WebApi.Code.Extensions
+﻿using CleanArchitecture.WebApi.Code.Options;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+namespace CleanArchitecture.WebApi.Code.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealths(this IServiceCollection services,string connectionString)
+        public static void AddHealths(this IServiceCollection services,AppConfigOptions appConfig,string connectionString)
         {
-            services.AddHealthChecks().AddSqlServer(connectionString);
+            IHealthChecksBuilder healthChecksBuilder = services.AddHealthChecks();
+
+            if (appConfig.UseInMemoryDatabase)
+            {
+                healthChecksBuilder.AddCheck("InMemory Database", () => HealthCheckResult.Healthy("InMemory database is healthy."), tags: ["Ready"]);
+            }
+            else
+            {
+                healthChecksBuilder.AddSqlServer(connectionString, name: "SQL Server", tags: ["Ready"]);
+            }
+
             services.AddHealthChecksUI().AddInMemoryStorage();
         }
 

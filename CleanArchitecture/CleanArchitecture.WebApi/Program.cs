@@ -64,7 +64,7 @@ try
     builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfile>(), typeof(Program));
 
     // Add health checks to the container.
-    builder.Services.AddHealths(defaultConnectionString);
+    builder.Services.AddHealths(appConfig,defaultConnectionString);
 
     var app = builder.Build();
     app.ConfigureExceptionHandler(app.Logger);

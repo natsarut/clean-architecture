@@ -73,7 +73,7 @@ namespace CleanArchitecture.UnitTests
 
             // Assert
             OkObjectResult okResult = Assert.IsType<OkObjectResult>(result);
-            IEnumerable<ArtistDto> items = Assert.IsAssignableFrom<IEnumerable<ArtistDto>>(okResult.Value);
+            IEnumerable<ArtistDto> items = Assert.IsType<IEnumerable<ArtistDto>>(okResult.Value, exactMatch: false);
         }
 
         [Fact]
