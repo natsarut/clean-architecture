@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CleanArchitecture.ApplicationCore;
+﻿using CleanArchitecture.ApplicationCore;
 using CleanArchitecture.ApplicationCore.Entities;
 using CleanArchitecture.ApplicationCore.Interfaces;
 using CleanArchitecture.ApplicationCore.Models;
@@ -34,7 +33,7 @@ namespace CleanArchitecture.UnitTests
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
-            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(_loggerFactory), _controllerLoggerMock.Object);
+            var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
             IActionResult result = await controller.GetArtist(_id);
 
             // Assert
@@ -51,7 +50,7 @@ namespace CleanArchitecture.UnitTests
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
-            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(_loggerFactory), _controllerLoggerMock.Object);
+            var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
             IActionResult result = await controller.GetArtist(_id);
 
             // Assert
@@ -68,7 +67,7 @@ namespace CleanArchitecture.UnitTests
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
-            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(_loggerFactory), _controllerLoggerMock.Object);
+            var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
             IActionResult result = await controller.GetArtists();
 
             // Assert
@@ -87,7 +86,7 @@ namespace CleanArchitecture.UnitTests
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
-            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(_loggerFactory), _controllerLoggerMock.Object);
+            var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
             IActionResult result = await controller.GetPaginatedArtists(queryStringParameters);
 
             // Assert
@@ -106,7 +105,7 @@ namespace CleanArchitecture.UnitTests
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
-            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(_loggerFactory), _controllerLoggerMock.Object);
+            var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
             IActionResult result = await controller.PostArtist(artistDto);
 
             // Assert
@@ -128,7 +127,7 @@ namespace CleanArchitecture.UnitTests
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
-            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(_loggerFactory), _controllerLoggerMock.Object);
+            var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
             IActionResult result = await controller.PutArtist(_id, artistDto);
 
             // Assert
@@ -146,7 +145,7 @@ namespace CleanArchitecture.UnitTests
             var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
 
             // Act
-            var controller = new ArtistsController(service, AutoMapperProfile.CreateMapper(_loggerFactory), _controllerLoggerMock.Object);
+            var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
             IActionResult result = await controller.DeleteArtist(_id);
 
             // Assert

@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using CleanArchitecture.ApplicationCore;
+﻿using CleanArchitecture.ApplicationCore;
 using CleanArchitecture.ApplicationCore.Entities;
 using CleanArchitecture.ApplicationCore.Interfaces;
 using CleanArchitecture.ApplicationCore.Models;
 using CleanArchitecture.WebApi.Models;
+using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

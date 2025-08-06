@@ -60,8 +60,8 @@ try
     // Add infrastructures to the container.
     builder.Services.AddInfrastructureServices();
 
-    // Add AutoMaper to services container.
-    builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfile>(), typeof(Program));
+    // Add object mapper to the container.
+    builder.Services.AddObjectMapper();
 
     // Add health checks to the container.
     builder.Services.AddHealths(appConfig,defaultConnectionString);
