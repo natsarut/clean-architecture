@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.ApplicationCore.Entities;
+using CleanArchitecture.ApplicationCore.Messages;
 using CleanArchitecture.ApplicationCore.Exceptions;
 using CleanArchitecture.ApplicationCore.Interfaces;
 using CleanArchitecture.ApplicationCore.Models;
@@ -11,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.ApplicationCore.Services
 {
-    public class ArtistService(IUnitOfWork unitOfWork, ILogger<GenericService<Artist>> logger) : GenericService<Artist>(unitOfWork, logger), IArtistService
+    public class ArtistService(IUnitOfWork unitOfWork, ILogger<GenericService<Artist>> logger, IMessageProducer messageProducer) : GenericService<Artist>(unitOfWork, logger), IArtistService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMessageProducer _messageProducer = messageProducer;
 
         public async Task RemoveArtistAsync(Guid artistId, CancellationToken cancellationToken = default)
         {
@@ -26,6 +28,12 @@ namespace CleanArchitecture.ApplicationCore.Services
             Artist? artist = await GetByIdAsync(artistForUpdate.ArtistId, cancellationToken) ?? throw new NotFoundException($"Artist with ArtistId {artistForUpdate.ArtistId} not found.");
             artist.Name = artistForUpdate.Name;
             await UpdateAsync(artist, cancellationToken);
+        }
+
+        public override async Task AddAsync(Artist entity, CancellationToken cancellationToken = default)
+        {
+            await base.AddAsync(entity, cancellationToken);
+            await _messageProducer.PublishAsync(new ArtistCreated() { Name=entity.Name,ActiveFrom=entity.ActiveFrom,EMailAddress=entity.EMailAddress}, cancellationToken);
         }
     }
 }

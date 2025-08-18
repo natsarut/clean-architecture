@@ -1,8 +1,8 @@
 ﻿namespace CleanArchitecture.WebApi.Models
 {
-    public class ArtistForUpdateDto
+    public record ArtistForUpdateDto
     {
-        public Guid ArtistId { get; set; }
-        public required string Name { get; set; }
+        public Guid ArtistId { get; init; }
+        public required string Name { get; init; }
     }
 }

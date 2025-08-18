@@ -1,9 +1,10 @@
 ﻿namespace CleanArchitecture.WebApi.Models
 {
-    public class ArtistDto
+    public record ArtistDto
     {
-        public Guid ArtistId { get; set; }
-        public required string Name { get; set; }
-        public DateTime? ActiveFrom { get; set; }
+        public Guid ArtistId { get; init; }
+        public required string Name { get; init; }
+        public DateTime? ActiveFrom { get; init; }
+        public string? EMailAddress { get; init; }
     }
 }

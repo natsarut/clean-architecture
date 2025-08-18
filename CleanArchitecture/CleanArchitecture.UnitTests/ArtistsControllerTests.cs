@@ -23,6 +23,7 @@ namespace CleanArchitecture.UnitTests
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
         private readonly Mock<ILogger<GenericService<Artist>>> _genericServiceLoggerMock = new();
         private readonly Mock<ILogger<ArtistsController>> _controllerLoggerMock = new();
+        private readonly Mock<IMessageProducer> _messageProducerMock = new();
         private readonly Guid _id = Guid.NewGuid();
 
         [Fact]
@@ -30,7 +31,7 @@ namespace CleanArchitecture.UnitTests
         {
             // Arrange
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id,Name="BNK48" });
-            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object, _messageProducerMock.Object);
 
             // Act
             var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
@@ -47,7 +48,7 @@ namespace CleanArchitecture.UnitTests
         {
             // Arrange
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync((Artist?)null);
-            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object, _messageProducerMock.Object);
 
             // Act
             var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
@@ -64,7 +65,7 @@ namespace CleanArchitecture.UnitTests
             // Arrange
             var artists = new List<Artist> { new() { ArtistId = Guid.NewGuid(),Name="BNK48" }, new() { ArtistId = Guid.NewGuid(),Name="JKT48" } };
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetAllAsync(null, string.Empty, false, default)).ReturnsAsync(artists);
-            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object, _messageProducerMock.Object);
 
             // Act
             var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
@@ -83,7 +84,7 @@ namespace CleanArchitecture.UnitTests
             var queryStringParameters = new QueryStringParameters { PageNumber = 1, PageSize = 10 };
             var paginatedArtists = new PaginatedList<Artist>(items, items.Count, queryStringParameters.PageNumber, queryStringParameters.PageSize);
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetPaginatedAllAsync(queryStringParameters, string.Empty, false, default)).ReturnsAsync(paginatedArtists);
-            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object, _messageProducerMock.Object);
 
             // Act
             var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
@@ -102,7 +103,7 @@ namespace CleanArchitecture.UnitTests
             var artistDto = new ArtistDto { ArtistId = _id, Name = "Test Artist" };
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().AddAsync(It.IsAny<Artist>(), default)).Returns(Task.CompletedTask);
             _unitOfWorkMock.Setup(x => x.SaveChangesAsync(default)).Returns(Task.CompletedTask);
-            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object, _messageProducerMock.Object);
 
             // Act
             var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
@@ -124,7 +125,7 @@ namespace CleanArchitecture.UnitTests
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id,Name = "BNK48" });
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().Update(It.IsAny<Artist>()));
             _unitOfWorkMock.Setup(x => x.SaveChangesAsync(default)).Returns(Task.CompletedTask);
-            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object, _messageProducerMock.Object);
 
             // Act
             var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);
@@ -142,7 +143,7 @@ namespace CleanArchitecture.UnitTests
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().GetByIdAsync(_id, default)).ReturnsAsync(new Artist { ArtistId = _id , Name = "BNK48" });
             _unitOfWorkMock.Setup(x => x.Repository<Artist>().Remove(It.IsAny<Artist>()));
             _unitOfWorkMock.Setup(x => x.SaveChangesAsync(default)).Returns(Task.CompletedTask);
-            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object);
+            var service = new ArtistService(_unitOfWorkMock.Object, _genericServiceLoggerMock.Object, _messageProducerMock.Object);
 
             // Act
             var controller = new ArtistsController(service, MapsterConfig.CreateMapper(), _controllerLoggerMock.Object);

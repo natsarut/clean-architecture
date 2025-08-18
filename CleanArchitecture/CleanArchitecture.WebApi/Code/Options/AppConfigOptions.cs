@@ -1,9 +1,10 @@
 ﻿namespace CleanArchitecture.WebApi.Code.Options
 {
-    public class AppConfigOptions
+    public record AppConfigOptions
     {
         public const string SectionName = "AppConfig";
 
-        public bool UseInMemoryDatabase { get; set; } = false;
+        public bool UseInMemoryDatabase { get; init; } = false;
+        public string RabbitMqHost { get; init; } = "rabbitmq://localhost";
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.ApplicationCore.Interfaces;
 using CleanArchitecture.ApplicationCore.Services;
 using CleanArchitecture.Infrastructure.Databases;
+using CleanArchitecture.Infrastructure.MessagingServices;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IUnitOfWork, ApplicationUnitOfWork>();
             services.AddScoped<IAlbumService, AlbumService>();
             services.AddScoped<IArtistService, ArtistService>();
+            services.AddScoped<IMessageProducer, MessageProducer>();
         }        
     }
 }

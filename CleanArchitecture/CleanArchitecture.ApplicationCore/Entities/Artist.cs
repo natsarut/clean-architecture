@@ -8,5 +8,6 @@ public partial class Artist
     public Guid ArtistId { get; set; }
     public required string Name { get; set; }
     public DateTime? ActiveFrom { get; set; }
+    public string? EMailAddress { get; set; }
     public ICollection<Album> Albums { get; set; } = [];
 }

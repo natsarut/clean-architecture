@@ -60,6 +60,9 @@ try
     // Add infrastructures to the container.
     builder.Services.AddInfrastructureServices();
 
+    // Add message broker to the container.
+    builder.Services.AddRabbitMq(appConfig);
+
     // Add object mapper to the container.
     builder.Services.AddObjectMapper();
 

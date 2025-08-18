@@ -16,9 +16,9 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
         modelBuilder.Entity<Album>(entity =>
         {
             entity.ToTable("Album");
-            entity.Property(e => e.AlbumId);
-            entity.Property(e => e.Name);
-            entity.Property(e => e.ReleasedDate);
+            entity.Property(e => e.AlbumId).HasColumnName("AlbumId");
+            entity.Property(e => e.Name).HasColumnName("Name");
+            entity.Property(e => e.ReleasedDate).HasColumnName("ReleasedDate");
             entity.HasOne(d => d.Artist).WithMany(p => p.Albums).HasForeignKey(d => d.ArtistId);
             entity.HasOne(d => d.Genre).WithMany(p => p.Albums).HasForeignKey(d => d.GenreId);
         });
@@ -26,16 +26,17 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
         modelBuilder.Entity<Artist>(entity =>
         {
             entity.ToTable("Artist");
-            entity.Property(e => e.ArtistId).ValueGeneratedNever();
-            entity.Property(e => e.ActiveFrom);
-            entity.Property(e => e.Name);
+            entity.Property(e => e.ArtistId).HasColumnName("ArtistId");
+            entity.Property(e => e.ActiveFrom).HasColumnName("ActiveFrom");
+            entity.Property(e => e.Name).HasColumnName("Name");
+            entity.Property(e => e.EMailAddress).HasColumnName("EMailAddress");
         });
 
         modelBuilder.Entity<Genre>(entity =>
         {
             entity.ToTable("Genre");
-            entity.Property(e => e.GenreId);
-            entity.Property(e => e.GenreName);
+            entity.Property(e => e.GenreId).HasColumnName("GenreId");
+            entity.Property(e => e.GenreName).HasColumnName("GenreName");
         });
     }
 }

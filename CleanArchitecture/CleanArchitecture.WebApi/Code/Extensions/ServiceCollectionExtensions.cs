@@ -1,5 +1,7 @@
-﻿using CleanArchitecture.WebApi.Code.Options;
+﻿using CleanArchitecture.ApplicationCore.Messages;
+using CleanArchitecture.WebApi.Code.Options;
 using Mapster;
+using MassTransit;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CleanArchitecture.WebApi.Code.Extensions
@@ -39,6 +41,28 @@ namespace CleanArchitecture.WebApi.Code.Extensions
             // Add Swagger UI to services container.
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+        }
+
+        public static void AddRabbitMq(this IServiceCollection services, AppConfigOptions appConfig)
+        {
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(new Uri(appConfig.RabbitMqHost), h => { });
+                    cfg.Publish<ArtistCreated>(p =>
+                    {
+                        p.Durable = true;
+                        p.AutoDelete = false;
+                        p.ExchangeType = "direct";
+                    });
+
+                    cfg.ReceiveEndpoint("cleanarchitecture.artistcreated.event.queue", e =>
+                    {
+                        e.Bind<ArtistCreated>();
+                    });
+                });
+            });
         }
     }
 }
