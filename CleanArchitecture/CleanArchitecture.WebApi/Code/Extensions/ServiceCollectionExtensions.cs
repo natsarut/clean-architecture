@@ -3,6 +3,7 @@ using CleanArchitecture.WebApi.Code.Options;
 using Mapster;
 using MassTransit;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using RabbitMQ.Client;
 
 namespace CleanArchitecture.WebApi.Code.Extensions
 {
@@ -43,23 +44,23 @@ namespace CleanArchitecture.WebApi.Code.Extensions
             services.AddSwaggerGen();
         }
 
-        public static void AddRabbitMq(this IServiceCollection services, AppConfigOptions appConfig)
+        public static void AddMassTransitProducer(this IServiceCollection services, AppConfigOptions appConfig)
         {
-            services.AddMassTransit(x =>
+            services.AddMassTransit(mt =>
             {
-                x.UsingRabbitMq((context, cfg) =>
+                mt.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host(new Uri(appConfig.RabbitMqHost), h => { });
-                    cfg.Publish<ArtistCreated>(p =>
+                    cfg.Host(appConfig.RabbitMqHost,"/", h =>
                     {
-                        p.Durable = true;
-                        p.AutoDelete = false;
-                        p.ExchangeType = "direct";
+                        h.Username("guest");
+                        h.Password("guest");
                     });
 
-                    cfg.ReceiveEndpoint("cleanarchitecture.artistcreated.event.queue", e =>
+                    cfg.Message<ArtistCreated>(e => e.SetEntityName(typeof(ArtistCreated).FullName!)); // Name of the primary exchange.
+                    cfg.Publish<ArtistCreated>(e => e.ExchangeType = ExchangeType.Direct); // Primary exchange type.
+                    cfg.Send<ArtistCreated>(e =>
                     {
-                        e.Bind<ArtistCreated>();
+                        e.UseRoutingKeyFormatter(context => context.Message.NotificationProvider.ToString()); // Route by notification provider (email or sms).
                     });
                 });
             });

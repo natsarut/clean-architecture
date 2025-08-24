@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.ApplicationCore;
 using CleanArchitecture.ApplicationCore.Interfaces;
-using CleanArchitecture.ApplicationCore.Models;
 using CleanArchitecture.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;

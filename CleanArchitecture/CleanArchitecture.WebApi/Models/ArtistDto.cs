@@ -6,5 +6,6 @@
         public required string Name { get; init; }
         public DateTime? ActiveFrom { get; init; }
         public string? EMailAddress { get; init; }
+        public string? MobilePhoneNumber { get; init; }
     }
 }

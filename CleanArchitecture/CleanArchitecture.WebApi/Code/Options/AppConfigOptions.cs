@@ -5,6 +5,6 @@
         public const string SectionName = "AppConfig";
 
         public bool UseInMemoryDatabase { get; init; } = false;
-        public string RabbitMqHost { get; init; } = "rabbitmq://localhost";
+        public string RabbitMqHost { get; init; } = "localhost";
     }
 }

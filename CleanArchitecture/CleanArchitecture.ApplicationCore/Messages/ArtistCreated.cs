@@ -9,8 +9,12 @@ namespace CleanArchitecture.ApplicationCore.Messages
 {
     public record ArtistCreated
     {
-        public required string Name { get; init; }
-        public DateTime? ActiveFrom { get; init; }
-        public string? EMailAddress { get; init; }
+        public NotificationProviders NotificationProvider { get; init; }
+        public Guid ArtistId { get; init; }
+
+        /// <summary>
+        /// E-mail address or mobile phone number.
+        /// </summary>
+        public required string Target { get; init; } 
     }
 }

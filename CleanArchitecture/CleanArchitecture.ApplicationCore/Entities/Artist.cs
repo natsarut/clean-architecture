@@ -9,5 +9,6 @@ public partial class Artist
     public required string Name { get; set; }
     public DateTime? ActiveFrom { get; set; }
     public string? EMailAddress { get; set; }
+    public string? MobilePhoneNumber { get; set; }
     public ICollection<Album> Albums { get; set; } = [];
 }

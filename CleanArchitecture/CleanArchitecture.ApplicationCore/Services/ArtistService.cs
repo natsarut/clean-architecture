@@ -33,7 +33,17 @@ namespace CleanArchitecture.ApplicationCore.Services
         public override async Task AddAsync(Artist entity, CancellationToken cancellationToken = default)
         {
             await base.AddAsync(entity, cancellationToken);
-            await _messageProducer.PublishAsync(new ArtistCreated() { Name=entity.Name,ActiveFrom=entity.ActiveFrom,EMailAddress=entity.EMailAddress}, cancellationToken);
+
+            if (!string.IsNullOrWhiteSpace(entity.EMailAddress))
+            {
+                await _messageProducer.PublishAsync(new ArtistCreated() { NotificationProvider=NotificationProviders.Email,ArtistId = entity.ArtistId,Target=entity.EMailAddress }, cancellationToken);
+            }
+
+            if (!string.IsNullOrWhiteSpace(entity.MobilePhoneNumber))
+            {
+                await _messageProducer.PublishAsync(new ArtistCreated() { NotificationProvider=NotificationProviders.Sms,ArtistId = entity.ArtistId,Target=entity.MobilePhoneNumber }, cancellationToken);
+            }
+
         }
     }
 }

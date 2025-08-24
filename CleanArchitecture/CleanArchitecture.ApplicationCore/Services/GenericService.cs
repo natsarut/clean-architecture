@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.ApplicationCore.Entities;
 using CleanArchitecture.ApplicationCore.Interfaces;
-using CleanArchitecture.ApplicationCore.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
