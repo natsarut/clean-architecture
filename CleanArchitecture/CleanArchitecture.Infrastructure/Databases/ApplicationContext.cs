@@ -30,6 +30,7 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
             entity.Property(e => e.ActiveFrom).HasColumnName("ActiveFrom");
             entity.Property(e => e.Name).HasColumnName("Name");
             entity.Property(e => e.EMailAddress).HasColumnName("EMailAddress");
+            entity.Property(e => e.MobilePhoneNumber).HasColumnName("MobilePhoneNumber");
         });
 
         modelBuilder.Entity<Genre>(entity =>
