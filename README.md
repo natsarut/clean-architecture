@@ -11,6 +11,7 @@ Clean Architecture – Implements .NET application using clean architecture by r
 - https://www.c-sharpcorner.com/article/logging-with-elasticsearch-kibana-serilog-using-asp-net-core-docker
 - https://dev.to/mohammedahmed/building-a-custom-logging-provider-in-aspnet-core-437n
 - https://wrapt.dev/blog/building-an-event-driven-dotnet-application-the-fundamentals
+- https://medium.com/@mk.muhammadkhoirudin/exchange-queue-rabbitmq-using-c-and-why-does-rabbitmq-need-both-exchange-and-queue-c81c423dab69
 - https://medium.com/@codebob75/unit-testing-in-c-with-xunit-complete-guide-18ee2b919b05
 - https://thecodebuzz.com/unit-test-mock-automapper-asp-net-core-imapper/
 - https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-code-coverage?tabs=windows
