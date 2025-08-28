@@ -1,0 +1,6 @@
+@CleanArchitecture.MessageConsumerService_HostAddress = http://localhost:5192
+
+GET {{CleanArchitecture.MessageConsumerService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

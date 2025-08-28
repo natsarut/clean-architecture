@@ -43,7 +43,6 @@ namespace CleanArchitecture.ApplicationCore.Services
             {
                 await _messageProducer.PublishAsync(new ArtistCreated() { NotificationProvider=NotificationProviders.Sms,ArtistId = entity.ArtistId,Target=entity.MobilePhoneNumber }, cancellationToken);
             }
-
         }
     }
 }
