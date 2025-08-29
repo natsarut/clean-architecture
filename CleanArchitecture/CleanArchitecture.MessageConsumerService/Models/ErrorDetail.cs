@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace CleanArchitecture.MessageConsumerService
+namespace CleanArchitecture.MessageConsumerService.Models
 {
     public class ErrorDetail
     {

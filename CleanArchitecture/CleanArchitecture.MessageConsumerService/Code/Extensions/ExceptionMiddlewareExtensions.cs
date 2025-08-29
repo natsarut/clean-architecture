@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using CleanArchitecture.MessageConsumerService.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 
 namespace CleanArchitecture.MessageConsumerService.Code.Extensions
